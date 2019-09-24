@@ -1,7 +1,7 @@
-package com.noorifytech.moviesapp.dao.api
+package com.noorifytech.moviesapp.dao.backend.impl.retrofit
 
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.noorifytech.moviesapp.BuildConfig
-import com.noorifytech.moviesapp.common.LiveDataCallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -28,7 +28,7 @@ object RetrofitFactory {
             .client(client)
             .baseUrl("$baseUrl/")
             .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(LiveDataCallAdapterFactory())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
 
         return builder.build()
     }

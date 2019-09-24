@@ -1,16 +1,24 @@
 package com.noorifytech.moviesapp.common
 
-import com.noorifytech.moviesapp.dao.api.dto.MoviesListResponse
-import com.noorifytech.moviesapp.dao.db.entity.Movie
-import com.noorifytech.moviesapp.vo.MoviesVO
+import com.noorifytech.moviesapp.dao.backend.dto.MoviesListResponse
+import com.noorifytech.moviesapp.dao.db.entity.MovieEntity
+import com.noorifytech.moviesapp.vo.MovieVO
 
 object MovieMapper {
-    fun toMovies(moviesResponse: MoviesListResponse): List<Movie> {
+    fun toMovies(moviesResponse: MoviesListResponse): List<MovieEntity> {
         val movies = moviesResponse.results
-        return movies.map { Movie(it.id, it.title, it.getPosterFullPath()) }
+
+        return movies.map {
+            MovieEntity(it.id, it.title, it.getPosterFullPath(), moviesResponse.page)
+        }
     }
 
-    fun toMovies(movies: List<Movie>): List<MoviesVO> {
-        return movies.map { MoviesVO(it.id, it.title, it.posterPath) }
+    fun toMovieVO(movieEntity: MovieEntity): MovieVO {
+        return MovieVO(
+            movieEntity.id,
+            movieEntity.title,
+            movieEntity.posterPath,
+            movieEntity.page
+        )
     }
 }

@@ -1,9 +1,8 @@
 package com.noorifytech.moviesapp.repository
 
-import androidx.lifecycle.LiveData
-import com.noorifytech.moviesapp.vo.MoviesVO
-import com.noorifytech.moviesapp.vo.Resource
+import androidx.paging.DataSource
+import com.noorifytech.moviesapp.vo.MovieVO
 
 interface MoviesRepository {
-    fun getMoviesList(): LiveData<Resource<List<MoviesVO>>>
+    fun getPopularMovies(): DataSource.Factory<Int, MovieVO>
 }

@@ -1,4 +1,4 @@
-package com.noorifytech.moviesapp.dao.api.dto
+package com.noorifytech.moviesapp.dao.backend.dto
 
 import retrofit2.Response
 import timber.log.Timber

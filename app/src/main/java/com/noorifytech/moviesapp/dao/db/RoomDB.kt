@@ -2,13 +2,13 @@ package com.noorifytech.moviesapp.dao.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.noorifytech.moviesapp.dao.db.entity.Movie
+import com.noorifytech.moviesapp.dao.db.entity.MovieEntity
 
 /**
  * Movies database description.
  */
 @Database(
-    entities = [Movie::class],
+    entities = [MovieEntity::class],
     version = 1,
     exportSchema = false
 )

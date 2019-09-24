@@ -5,10 +5,10 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.noorifytech.moviesapp.common.AppExecutors
-import com.noorifytech.moviesapp.dao.api.dto.ApiEmptyResponse
-import com.noorifytech.moviesapp.dao.api.dto.ApiErrorResponse
-import com.noorifytech.moviesapp.dao.api.dto.ApiResponse
-import com.noorifytech.moviesapp.dao.api.dto.ApiSuccessResponse
+import com.noorifytech.moviesapp.dao.backend.dto.ApiEmptyResponse
+import com.noorifytech.moviesapp.dao.backend.dto.ApiErrorResponse
+import com.noorifytech.moviesapp.dao.backend.dto.ApiResponse
+import com.noorifytech.moviesapp.dao.backend.dto.ApiSuccessResponse
 import com.noorifytech.moviesapp.vo.Resource
 
 /**

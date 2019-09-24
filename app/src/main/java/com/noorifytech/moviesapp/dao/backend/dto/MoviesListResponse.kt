@@ -1,4 +1,4 @@
-package com.noorifytech.moviesapp.dao.api.dto
+package com.noorifytech.moviesapp.dao.backend.dto
 
 import com.google.gson.annotations.SerializedName
 

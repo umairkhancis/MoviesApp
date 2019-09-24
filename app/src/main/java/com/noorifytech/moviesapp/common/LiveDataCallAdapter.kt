@@ -1,7 +1,7 @@
 package com.noorifytech.moviesapp.common
 
 import androidx.lifecycle.LiveData
-import com.noorifytech.moviesapp.dao.api.dto.ApiResponse
+import com.noorifytech.moviesapp.dao.backend.dto.ApiResponse
 import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.Callback
