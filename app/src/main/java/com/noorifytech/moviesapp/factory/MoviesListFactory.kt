@@ -15,8 +15,10 @@ import com.noorifytech.moviesapp.viewmodel.MoviesListViewModel
 
 object MoviesListFactory {
     fun getViewModel(movieListActivity: MoviesListActivity): MoviesListViewModel {
-        val db = Room.databaseBuilder(movieListActivity,
-            RoomDB::class.java, "movies_app")
+        val db = Room.databaseBuilder(
+            movieListActivity,
+            RoomDB::class.java, "movies_app"
+        )
             .build()
 
         val backendTMDBApi =
@@ -25,11 +27,13 @@ object MoviesListFactory {
 
         val moviesBackendDao = MoviesBackendDaoImpl(backendTMDBApi)
 
-        val moviesRepo = MoviesRepositoryImpl(db.moviesDao(), MovieMapper)
-
-        val viewModelFactory = MoviesListViewModelFactory(moviesRepo,
-            PopularMoviesBoundaryCallback(db.moviesDao(), moviesBackendDao, MovieMapper)
+        val moviesRepo = MoviesRepositoryImpl(
+            db.moviesDao(),
+            moviesBackendDao,
+            MovieMapper
         )
+
+        val viewModelFactory = MoviesListViewModelFactory(moviesRepo)
 
         return ViewModelProviders.of(movieListActivity, viewModelFactory)
             .get(MoviesListViewModel::class.java)

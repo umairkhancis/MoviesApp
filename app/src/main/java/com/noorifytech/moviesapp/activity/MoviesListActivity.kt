@@ -8,29 +8,34 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.noorifytech.moviesapp.R
 import com.noorifytech.moviesapp.adapter.MoviesPagedListAdapter
+import com.noorifytech.moviesapp.dao.db.entity.MovieEntity
 import com.noorifytech.moviesapp.factory.MoviesListFactory
 import com.noorifytech.moviesapp.viewmodel.MoviesListViewModel
 import com.noorifytech.moviesapp.vo.MovieVO
 import kotlinx.android.synthetic.main.activity_movies_list.*
 
 class MoviesListActivity : AppCompatActivity() {
-    private lateinit var viewModel: MoviesListViewModel
+
     private lateinit var moviesListAdapter: MoviesPagedListAdapter
+    private val viewModel: MoviesListViewModel by lazy {
+        MoviesListFactory.getViewModel(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_movies_list)
 
-        init()
-
         initRecyclerView()
+
+        init()
     }
 
     private fun init() {
-        viewModel = MoviesListFactory.getViewModel(this)
-
-        viewModel.getPopularMovies().observe(this, updateView())
+        viewModel.popularMovies.observe(this, Observer<PagedList<MovieEntity>> {
+            println("MoviesListActivity.updateView:listSize: ${it.size}")
+            moviesListAdapter.submitList(it)
+        })
     }
 
     private fun initRecyclerView() {
@@ -41,10 +46,4 @@ class MoviesListActivity : AppCompatActivity() {
         moviesListAdapter = MoviesPagedListAdapter(this)
         moviesListRV.adapter = moviesListAdapter
     }
-
-    private fun updateView(): Observer<PagedList<MovieVO>> =
-        Observer { popularMovies ->
-            println("MoviesListActivity.updateView:listSize: ${popularMovies.size}")
-            moviesListAdapter.submitList(popularMovies)
-        }
 }

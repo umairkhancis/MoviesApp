@@ -13,8 +13,8 @@ import com.noorifytech.moviesapp.dao.db.entity.MovieEntity
 @Dao()
 interface MoviesDBDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(movieEntity: MovieEntity)
+    fun insert(movies: List<MovieEntity>)
 
-    @Query("SELECT * FROM Movies")
+    @Query("SELECT * FROM Movies ORDER BY id ASC")
     fun getPopularMovies(): DataSource.Factory<Int, MovieEntity>
 }

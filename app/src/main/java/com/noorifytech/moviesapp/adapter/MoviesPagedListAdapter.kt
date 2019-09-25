@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.noorifytech.moviesapp.R
-import com.noorifytech.moviesapp.vo.MovieVO
+import com.noorifytech.moviesapp.dao.db.entity.MovieEntity
 import kotlinx.android.synthetic.main.activity_movies_list_item.view.*
 
 class MoviesPagedListAdapter(private val context: Context) :
-    PagedListAdapter<MovieVO, MoviesPagedListAdapter.ViewHolder>(MOVIE_COMPARATOR) {
+    PagedListAdapter<MovieEntity, MoviesPagedListAdapter.ViewHolder>(MOVIE_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val viewItem = LayoutInflater.from(parent.context)
@@ -24,7 +24,7 @@ class MoviesPagedListAdapter(private val context: Context) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val movie = this.currentList?.get(position)
         if (movie != null) {
-            holder.bind(context, movie.name, movie.imageUrl)
+            holder.bind(context, movie.title, movie.posterPath)
         }
     }
 
@@ -46,11 +46,11 @@ class MoviesPagedListAdapter(private val context: Context) :
     }
 
     companion object {
-        val MOVIE_COMPARATOR = object : DiffUtil.ItemCallback<MovieVO>() {
-            override fun areItemsTheSame(oldItem: MovieVO, newItem: MovieVO) =
+        val MOVIE_COMPARATOR = object : DiffUtil.ItemCallback<MovieEntity>() {
+            override fun areItemsTheSame(oldItem: MovieEntity, newItem: MovieEntity) =
                 oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: MovieVO, newItem: MovieVO) =
+            override fun areContentsTheSame(oldItem: MovieEntity, newItem: MovieEntity) =
                 oldItem == newItem
         }
     }

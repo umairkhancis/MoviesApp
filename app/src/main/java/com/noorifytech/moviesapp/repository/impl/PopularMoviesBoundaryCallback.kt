@@ -5,24 +5,21 @@ import com.noorifytech.moviesapp.common.MovieMapper
 import com.noorifytech.moviesapp.dao.backend.MoviesBackendDao
 import com.noorifytech.moviesapp.dao.backend.dto.ApiSuccessResponse
 import com.noorifytech.moviesapp.dao.db.MoviesDBDao
+import com.noorifytech.moviesapp.dao.db.entity.MovieEntity
 import com.noorifytech.moviesapp.exception.BackendException
-import com.noorifytech.moviesapp.vo.MovieVO
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 class PopularMoviesBoundaryCallback(
     private val moviesDBDao: MoviesDBDao,
     private val moviesApiDao: MoviesBackendDao,
     private val movieMapper: MovieMapper
-) : PagedList.BoundaryCallback<MovieVO>(), CoroutineScope {
+) : PagedList.BoundaryCallback<MovieEntity>(), CoroutineScope {
 
     private var job = Job()
 
     override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.IO
+        get() = job + Dispatchers.Main
 
     private var isInProgress: Boolean = false
 
@@ -31,18 +28,18 @@ class PopularMoviesBoundaryCallback(
         queryAndSave()
     }
 
-    override fun onItemAtEndLoaded(itemAtEnd: MovieVO) {
+    override fun onItemAtEndLoaded(itemAtEnd: MovieEntity) {
         println("PopularMoviesBoundaryCallback.onItemAtEndLoaded")
         queryAndSave(itemAtEnd)
     }
 
-    private fun queryAndSave(itemAtEnd: MovieVO? = null) {
+    private fun queryAndSave(itemAtEnd: MovieEntity? = null) {
         println("PopularMoviesBoundaryCallback.queryAndSave")
         val nextPage = itemAtEnd?.page?.plus(1) ?: 1
 
         if (isInProgress) return
 
-        val routine = launch {
+        launch(Dispatchers.IO) {
             isInProgress = true
 
             try {
@@ -52,7 +49,7 @@ class PopularMoviesBoundaryCallback(
                 if (response is ApiSuccessResponse) {
                     println("PopularMoviesBoundaryCallback.queryAndSave:ApiSuccessResponse")
                     val movieEntities = movieMapper.toMovies(response.body)
-                    movieEntities.map { moviesDBDao.insert(it) }
+                    moviesDBDao.insert(movieEntities)
                     println("PopularMoviesBoundaryCallback.queryAndSave:Saved::::")
                 } else {
                     println("return error to the view")
