@@ -8,5 +8,5 @@ class MoviesListViewModel(private val moviesRepository: MoviesRepository) : View
 
     private val result = moviesRepository.getPopularMovies()
 
-    val popularMovies = Transformations.map(result) { it }
+    val popularMovies = result
 }
