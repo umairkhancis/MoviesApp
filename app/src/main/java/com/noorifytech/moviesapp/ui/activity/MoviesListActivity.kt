@@ -8,7 +8,7 @@ import androidx.paging.PagedList
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.noorifytech.moviesapp.R
-import com.noorifytech.moviesapp.data.dao.db.entity.MovieEntity
+import com.noorifytech.moviesapp.data.repository.vo.MovieVO
 import com.noorifytech.moviesapp.ui.adapter.MoviesPagedListAdapter
 import com.noorifytech.moviesapp.ui.viewmodel.MoviesListViewModel
 import com.noorifytech.moviesapp.ui.viewmodel.factory.MoviesListViewModelFactory
@@ -36,7 +36,7 @@ class MoviesListActivity : AppCompatActivity() {
 
     private fun init() {
         viewModel.getPopularMoviesLiveData()
-            .observe(this, Observer<PagedList<MovieEntity>> {
+            .observe(this, Observer<PagedList<MovieVO>> {
             moviesListAdapter.submitList(it)
         })
     }

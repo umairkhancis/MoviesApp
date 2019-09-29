@@ -5,7 +5,7 @@ import com.noorifytech.moviesapp.common.MovieMapper
 import com.noorifytech.moviesapp.data.dao.backend.MoviesBackendDao
 import com.noorifytech.moviesapp.data.dao.backend.dto.ApiSuccessResponse
 import com.noorifytech.moviesapp.data.dao.db.MoviesDBDao
-import com.noorifytech.moviesapp.data.dao.db.entity.MovieEntity
+import com.noorifytech.moviesapp.data.repository.vo.MovieVO
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
@@ -13,7 +13,7 @@ class PopularMoviesBoundaryCallback(
     private val moviesDBDao: MoviesDBDao,
     private val moviesApiDao: MoviesBackendDao,
     private val movieMapper: MovieMapper
-) : PagedList.BoundaryCallback<MovieEntity>(), CoroutineScope {
+) : PagedList.BoundaryCallback<MovieVO>(), CoroutineScope {
 
     @Volatile
     private var isInProgress: Boolean = false
@@ -22,11 +22,11 @@ class PopularMoviesBoundaryCallback(
         queryAndSave()
     }
 
-    override fun onItemAtEndLoaded(itemAtEnd: MovieEntity) {
+    override fun onItemAtEndLoaded(itemAtEnd: MovieVO) {
         queryAndSave(itemAtEnd)
     }
 
-    private fun queryAndSave(itemAtEnd: MovieEntity? = null) {
+    private fun queryAndSave(itemAtEnd: MovieVO? = null) {
         val nextPage = itemAtEnd?.page?.plus(1) ?: 1
 
         if (isInProgress) return

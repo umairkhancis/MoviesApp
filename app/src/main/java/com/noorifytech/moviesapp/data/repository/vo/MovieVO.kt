@@ -1,3 +1,3 @@
-package com.noorifytech.moviesapp.ui.vo
+package com.noorifytech.moviesapp.data.repository.vo
 
 data class MovieVO(val id: Int, val name: String, val imageUrl: String, val page: Int)

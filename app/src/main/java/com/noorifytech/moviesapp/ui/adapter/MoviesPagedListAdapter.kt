@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.noorifytech.moviesapp.R
-import com.noorifytech.moviesapp.data.dao.db.entity.MovieEntity
+import com.noorifytech.moviesapp.data.repository.vo.MovieVO
 import kotlinx.android.synthetic.main.activity_movies_list_item.view.*
 
 class MoviesPagedListAdapter(private val context: Context) :
-    PagedListAdapter<MovieEntity, MoviesPagedListAdapter.MoviesViewHolder>(MOVIE_COMPARATOR) {
+    PagedListAdapter<MovieVO, MoviesPagedListAdapter.MoviesViewHolder>(MOVIE_COMPARATOR) {
 
     override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
         val movie = getItem(position)
@@ -30,12 +30,12 @@ class MoviesPagedListAdapter(private val context: Context) :
 
     class MoviesViewHolder(private val viewItem: View) : RecyclerView.ViewHolder(viewItem) {
 
-        fun bind(context: Context, movie: MovieEntity) {
-            viewItem.movieNameTV.text = movie.title
+        fun bind(context: Context, movie: MovieVO) {
+            viewItem.movieNameTV.text = movie.name
 
             Glide.with(context)
                 .asBitmap()
-                .load(movie.posterPath)
+                .load(movie.imageUrl)
                 .placeholder(R.mipmap.ic_launcher)
                 .into(viewItem.movieImageIV)
         }
@@ -43,11 +43,11 @@ class MoviesPagedListAdapter(private val context: Context) :
     }
 
     companion object {
-        val MOVIE_COMPARATOR = object : DiffUtil.ItemCallback<MovieEntity>() {
-            override fun areItemsTheSame(oldItem: MovieEntity, newItem: MovieEntity) =
+        val MOVIE_COMPARATOR = object : DiffUtil.ItemCallback<MovieVO>() {
+            override fun areItemsTheSame(oldItem: MovieVO, newItem: MovieVO) =
                 oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: MovieEntity, newItem: MovieEntity) =
+            override fun areContentsTheSame(oldItem: MovieVO, newItem: MovieVO) =
                 oldItem == newItem
         }
     }
