@@ -8,11 +8,7 @@ import com.noorifytech.moviesapp.data.repository.MoviesRepository
 
 class MoviesListViewModel(private val moviesRepository: MoviesRepository) : ViewModel() {
 
-    private var result: LiveData<PagedList<MovieEntity>>
-
-    init {
-        result = moviesRepository.getPopularMovies()
-    }
+    private var result: LiveData<PagedList<MovieEntity>> = moviesRepository.getPopularMovies()
 
     fun getPopularMoviesLiveData() = result
 }
