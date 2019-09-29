@@ -1,7 +1,7 @@
 # MoviesApp
 Android App to display popular movies using TMDB API in MVVM Architecture.
 
-## Libraries used:
+### Libraries used:
 
  - [PagingLibrary](https://developer.android.com/topic/libraries/architecture/paging) - For loading and displaying small chunks of data at a time. Loading partial data on demand reduces usage of network bandwidth and system resources.
  - [LiveData](https://developer.android.com/topic/libraries/architecture/livedata) - For observing data changes to the UI from the data model.
@@ -10,5 +10,5 @@ Android App to display popular movies using TMDB API in MVVM Architecture.
  - [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html) - For asynchronous programming.
  - [Glide](https://bumptech.github.io/glide/) - An image loading and caching library for Android focused on smooth scrolling.
  
- # Backend Service:
+ ### Backend Service:
  [The Movie Database](https://developers.themoviedb.org/3/movies)
