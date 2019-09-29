@@ -8,8 +8,14 @@ class MoviesApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        instance = this
+
         if(BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
+    }
+
+    companion object {
+        var instance: Application? = null
     }
 }

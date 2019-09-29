@@ -13,7 +13,7 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".activity.MoviesListActivity">
+        <activity android:name="com.noorifytech.moviesapp.ui.activity.MoviesListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

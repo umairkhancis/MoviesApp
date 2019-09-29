@@ -1,8 +1,8 @@
 package com.noorifytech.moviesapp.common
 
-import com.noorifytech.moviesapp.dao.backend.dto.MoviesListResponse
-import com.noorifytech.moviesapp.dao.db.entity.MovieEntity
-import com.noorifytech.moviesapp.vo.MovieVO
+import com.noorifytech.moviesapp.data.dao.backend.dto.MoviesListResponse
+import com.noorifytech.moviesapp.data.dao.db.entity.MovieEntity
+import com.noorifytech.moviesapp.ui.vo.MovieVO
 
 object MovieMapper {
     fun toMovies(moviesResponse: MoviesListResponse): List<MovieEntity> {
