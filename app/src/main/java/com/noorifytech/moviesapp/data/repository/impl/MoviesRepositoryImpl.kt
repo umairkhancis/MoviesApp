@@ -1,6 +1,7 @@
 package com.noorifytech.moviesapp.data.repository.impl
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
@@ -11,6 +12,8 @@ import com.noorifytech.moviesapp.data.dao.db.MoviesDBDao
 import com.noorifytech.moviesapp.data.repository.MoviesRepository
 import com.noorifytech.moviesapp.data.repository.vo.MovieDetailVO
 import com.noorifytech.moviesapp.data.repository.vo.MovieVO
+import com.noorifytech.moviesapp.data.repository.vo.NetworkStatus
+import com.noorifytech.moviesapp.data.repository.vo.Resource
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
@@ -29,7 +32,8 @@ class MoviesRepositoryImpl(
         println("${throwable.message}")
     }
 
-    override fun getPopularMovies(): LiveData<PagedList<MovieVO>> {
+    override fun getPopularMovies(): Resource<PagedList<MovieVO>> {
+
         val config = PagedList.Config.Builder()
             .setPageSize(PAGE_SIZE)
             .setInitialLoadSizeHint(PAGE_SIZE)
@@ -37,30 +41,52 @@ class MoviesRepositoryImpl(
             .setEnablePlaceholders(false)
             .build()
 
-        val boundaryCallback = PopularMoviesBoundaryCallback(moviesDBDao, moviesBackendDao, MovieMapper)
+        val networkStatus: MutableLiveData<NetworkStatus> = MutableLiveData()
+        val boundaryCallback =
+            PopularMoviesBoundaryCallback(moviesDBDao, moviesBackendDao, MovieMapper, networkStatus)
         val factory = moviesDBDao.getPopularMovies().map { movieMapper.toMovieVO(it) }
 
         val livePagedListBuilder: LivePagedListBuilder<Int, MovieVO> =
             LivePagedListBuilder(factory, config)
-            .setBoundaryCallback(boundaryCallback)
+                .setBoundaryCallback(boundaryCallback)
 
-        return livePagedListBuilder.build()
+        val liveData: LiveData<PagedList<MovieVO>> = livePagedListBuilder.build()
+
+        return Resource(
+            data = liveData,
+            networkStatus = networkStatus,
+            msg = ""
+        )
     }
 
-    override fun getMovieDetails(movieId: Int): LiveData<MovieDetailVO> {
+    override fun getMovieDetails(movieId: Int): Resource<MovieDetailVO> {
+
+        val networkStatus: MutableLiveData<NetworkStatus> = MutableLiveData()
+
         launch(Dispatchers.IO) {
+            networkStatus.postValue(NetworkStatus.LOADING)
+
             val response = moviesBackendDao.getMovieDetails(movieId)
+
             if (response is ApiSuccessResponse) {
                 val movieEntity = movieMapper.toMovieDetailEntity(response.body)
                 moviesDBDao.insert(movieEntity)
+                networkStatus.postValue(NetworkStatus.SUCCESS)
             } else {
-                println("return error to the view")
+                networkStatus.postValue(NetworkStatus.FAILED)
             }
         }
 
-        return Transformations.map(moviesDBDao.getMovieDetails(movieId)) {
-            it?.let { movieMapper.toMovieDetailVO(it) }
-        }
+        val liveData: LiveData<MovieDetailVO>? =
+            Transformations.map(moviesDBDao.getMovieDetails(movieId)) {
+                it?.let { movieMapper.toMovieDetailVO(it) }
+            }
+
+        return Resource(
+            data = liveData,
+            networkStatus = networkStatus,
+            msg = ""
+        )
     }
 
     companion object {

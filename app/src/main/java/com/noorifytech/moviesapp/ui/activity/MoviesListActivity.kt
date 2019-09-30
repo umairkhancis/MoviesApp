@@ -1,6 +1,7 @@
 package com.noorifytech.moviesapp.ui.activity
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.noorifytech.moviesapp.R
 import com.noorifytech.moviesapp.data.repository.vo.MovieVO
+import com.noorifytech.moviesapp.data.repository.vo.NetworkStatus
 import com.noorifytech.moviesapp.ui.adapter.MoviesPagedListAdapter
 import com.noorifytech.moviesapp.ui.callback.MoviesListCellCallback
 import com.noorifytech.moviesapp.ui.navigator.Navigator
@@ -41,9 +43,38 @@ class MoviesListActivity : AppCompatActivity(), MoviesListCellCallback {
     }
 
     private fun init() {
-        viewModel.getPopularMoviesLiveData()
-            .observe(this, Observer<PagedList<MovieVO>> {
+        viewModel.getPopularMovies()
+            ?.observe(this, Observer<PagedList<MovieVO>> {
                 moviesListAdapter.submitList(it)
+            })
+
+        viewModel.getPopularMoviesNetworkStatus()
+            .observe(this, Observer<NetworkStatus> { networkStatus ->
+                when (networkStatus) {
+                    NetworkStatus.LOADING -> Toast.makeText(
+                        this,
+                        NetworkStatus.LOADING.name,
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    NetworkStatus.SUCCESS -> Toast.makeText(
+                        this,
+                        NetworkStatus.SUCCESS.name,
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    NetworkStatus.FAILED -> Toast.makeText(
+                        this,
+                        NetworkStatus.FAILED.name,
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    else -> Toast.makeText(
+                        this,
+                        NetworkStatus.FAILED.name,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             })
     }
 

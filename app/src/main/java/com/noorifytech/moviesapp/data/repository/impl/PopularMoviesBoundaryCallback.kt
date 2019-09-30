@@ -1,18 +1,21 @@
 package com.noorifytech.moviesapp.data.repository.impl
 
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
 import com.noorifytech.moviesapp.common.MovieMapper
 import com.noorifytech.moviesapp.data.dao.backend.MoviesBackendDao
 import com.noorifytech.moviesapp.data.dao.backend.dto.ApiSuccessResponse
 import com.noorifytech.moviesapp.data.dao.db.MoviesDBDao
 import com.noorifytech.moviesapp.data.repository.vo.MovieVO
+import com.noorifytech.moviesapp.data.repository.vo.NetworkStatus
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 class PopularMoviesBoundaryCallback(
     private val moviesDBDao: MoviesDBDao,
     private val moviesApiDao: MoviesBackendDao,
-    private val movieMapper: MovieMapper
+    private val movieMapper: MovieMapper,
+    private val networkStatus: MutableLiveData<NetworkStatus>
 ) : PagedList.BoundaryCallback<MovieVO>(), CoroutineScope {
 
     @Volatile
@@ -34,14 +37,18 @@ class PopularMoviesBoundaryCallback(
         launch(Dispatchers.IO) {
             isInProgress = true
 
+            networkStatus.postValue(NetworkStatus.LOADING)
+
             val response =
                 moviesApiDao.getPopularMovies(nextPage)
 
             if (response is ApiSuccessResponse) {
                 val movieEntities = movieMapper.toMovies(response.body)
                 moviesDBDao.insert(movieEntities)
+
+                networkStatus.postValue(NetworkStatus.SUCCESS)
             } else {
-                println("return error to the view")
+                networkStatus.postValue(NetworkStatus.FAILED)
             }
 
             isInProgress = false
