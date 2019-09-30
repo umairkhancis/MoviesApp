@@ -32,16 +32,18 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     private fun init() {
         viewModel.getMovieDetails(movieId)
-            .observe(this, Observer<MovieDetailVO> {
-                movieNameTV.text = it.title
-                movieOverviewTV.text = it.overview
-                movieReleaseDateTV.text = it.getReleaseDate()
+            .observe(this, Observer<MovieDetailVO?> { movieDetails ->
+                if (movieDetails != null) {
+                    movieNameTV.text = movieDetails.title
+                    movieOverviewTV.text = movieDetails.overview
+                    movieReleaseDateTV.text = movieDetails.getReleaseDate()
 
-                Glide.with(this)
-                    .asBitmap()
-                    .load(it.imageUrl)
-                    .placeholder(R.mipmap.ic_launcher)
-                    .into(movieImageIV)
+                    Glide.with(this)
+                        .asBitmap()
+                        .load(movieDetails.imageUrl)
+                        .placeholder(R.mipmap.ic_launcher)
+                        .into(movieImageIV)
+                }
             })
     }
 
