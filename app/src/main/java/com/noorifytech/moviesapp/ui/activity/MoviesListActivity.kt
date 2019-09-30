@@ -10,11 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.noorifytech.moviesapp.R
 import com.noorifytech.moviesapp.data.repository.vo.MovieVO
 import com.noorifytech.moviesapp.ui.adapter.MoviesPagedListAdapter
+import com.noorifytech.moviesapp.ui.callback.MoviesListCellCallback
+import com.noorifytech.moviesapp.ui.navigator.Navigator
 import com.noorifytech.moviesapp.ui.viewmodel.MoviesListViewModel
 import com.noorifytech.moviesapp.ui.viewmodel.factory.MoviesListViewModelFactory
 import kotlinx.android.synthetic.main.activity_movies_list.*
 
-class MoviesListActivity : AppCompatActivity() {
+class MoviesListActivity : AppCompatActivity(), MoviesListCellCallback {
 
     private lateinit var moviesListAdapter: MoviesPagedListAdapter
     private lateinit var viewModelFactory: MoviesListViewModelFactory
@@ -34,18 +36,22 @@ class MoviesListActivity : AppCompatActivity() {
         init()
     }
 
+    override fun onMovieSelected(movieId: Int, position: Int) {
+        Navigator.navigateToMovieDetailsScreen(this, movieId)
+    }
+
     private fun init() {
         viewModel.getPopularMoviesLiveData()
             .observe(this, Observer<PagedList<MovieVO>> {
-            moviesListAdapter.submitList(it)
-        })
+                moviesListAdapter.submitList(it)
+            })
     }
 
     private fun initRecyclerView() {
         moviesListRV.layoutManager = LinearLayoutManager(this)
         moviesListRV.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
-        moviesListAdapter = MoviesPagedListAdapter(this)
+        moviesListAdapter = MoviesPagedListAdapter(this, this)
         moviesListRV.adapter = moviesListAdapter
     }
 }

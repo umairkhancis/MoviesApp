@@ -8,4 +8,7 @@ class MoviesBackendDaoImpl(private val api: TMDBApi) : MoviesBackendDao {
 
     override suspend fun getPopularMovies(page: Int) =
         ApiResponse.create(api.getPopularMovies(page = "$page"))
+
+    override suspend fun getMovieDetail(movieId: Int) =
+        ApiResponse.create(api.getMovieDetails(movieId))
 }

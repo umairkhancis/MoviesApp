@@ -1,6 +1,7 @@
 package com.noorifytech.moviesapp.data.repository.impl
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.noorifytech.moviesapp.common.MovieMapper
@@ -31,6 +32,10 @@ class MoviesRepositoryImpl(
             .setBoundaryCallback(boundaryCallback)
 
         return livePagedListBuilder.build()
+    }
+
+    override fun getMovieDetails(movieId: Int): LiveData<MovieVO> {
+        return Transformations.map(moviesDBDao.getMovieDetails(movieId)) { movieMapper.toMovieVO(it) }
     }
 
     companion object {

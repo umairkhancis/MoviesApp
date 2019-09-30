@@ -11,9 +11,18 @@ data class MovieEntity(
     @field:SerializedName("title")
     val title: String,
 
-    @field:SerializedName("poster_path")
-    val posterPath: String,
+    @field:SerializedName("image_url")
+    val imageUrl: String,
 
     @field:SerializedName("page")
-    val page: Int
+    val page: Int,
+
+    @field:SerializedName("overview")
+    val overview: String,
+
+    @field:SerializedName("release_date")
+    val releaseDate: Long,
+
+    @field:SerializedName("vote_average")
+    val voteAverage: Float
 )

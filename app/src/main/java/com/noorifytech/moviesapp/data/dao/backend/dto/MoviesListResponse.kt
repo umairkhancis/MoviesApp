@@ -15,17 +15,3 @@ data class MoviesListResponse(
     @SerializedName("results")
     val results: List<MovieDto>
 )
-
-data class MovieDto(
-    @SerializedName("id")
-    val id: Int,
-
-    @SerializedName("title")
-    val title: String,
-
-    @SerializedName("poster_path")
-    val posterPath: String
-) {
-
-    fun getPosterFullPath(): String = "http://image.tmdb.org/t/p/w185/$posterPath"
-}

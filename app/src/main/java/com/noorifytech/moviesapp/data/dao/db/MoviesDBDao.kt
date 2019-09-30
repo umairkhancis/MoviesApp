@@ -1,5 +1,6 @@
 package com.noorifytech.moviesapp.data.dao.db
 
+import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Insert
@@ -17,4 +18,7 @@ interface MoviesDBDao {
 
     @Query("SELECT * FROM Movies ORDER BY page ASC")
     fun getPopularMovies(): DataSource.Factory<Int, MovieEntity>
+
+    @Query("SELECT * FROM Movies WHERE id = :movieId")
+    fun getMovieDetails(movieId: Int): LiveData<MovieEntity>
 }

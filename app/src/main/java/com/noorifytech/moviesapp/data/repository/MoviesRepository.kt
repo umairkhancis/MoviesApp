@@ -6,4 +6,5 @@ import com.noorifytech.moviesapp.data.repository.vo.MovieVO
 
 interface MoviesRepository {
     fun getPopularMovies(): LiveData<PagedList<MovieVO>>
+    fun getMovieDetails(movieId: Int): LiveData<MovieVO>
 }
