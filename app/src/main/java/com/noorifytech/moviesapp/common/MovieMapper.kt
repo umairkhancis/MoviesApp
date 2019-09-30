@@ -1,18 +1,38 @@
 package com.noorifytech.moviesapp.common
 
 import android.annotation.SuppressLint
+import com.noorifytech.moviesapp.data.dao.backend.dto.MovieDto
 import com.noorifytech.moviesapp.data.dao.backend.dto.MoviesListResponse
+import com.noorifytech.moviesapp.data.dao.db.entity.MovieDetailEntity
 import com.noorifytech.moviesapp.data.dao.db.entity.MovieEntity
+import com.noorifytech.moviesapp.data.repository.vo.MovieDetailVO
 import com.noorifytech.moviesapp.data.repository.vo.MovieVO
 import java.text.SimpleDateFormat
 
 object MovieMapper {
     fun toMovies(moviesResponse: MoviesListResponse): List<MovieEntity> {
         val movies = moviesResponse.results
+        return movies.map { toMovieEntity(it) }
+    }
 
-        return movies.map {
-            MovieEntity(it.id, it.title, it.getPosterFullPath(), moviesResponse.page, it.overview, toTimeStamp(it.releaseDate), it.voteAverage)
-        }
+    fun toMovieEntity(movieDto: MovieDto): MovieEntity {
+        return MovieEntity(
+            movieDto.id,
+            movieDto.title,
+            movieDto.getPosterFullPath(),
+            movieDto.page
+        )
+    }
+
+    fun toMovieDetailEntity(movieDto: MovieDto): MovieDetailEntity {
+        return MovieDetailEntity(
+            movieDto.id,
+            movieDto.title,
+            movieDto.getPosterFullPath(),
+            movieDto.overview,
+            toTimeStamp(movieDto.releaseDate),
+            movieDto.voteAverage
+        )
     }
 
     fun toMovieVO(movieEntity: MovieEntity): MovieVO {
@@ -20,10 +40,18 @@ object MovieMapper {
             movieEntity.id,
             movieEntity.title,
             movieEntity.imageUrl,
-            movieEntity.page,
-            movieEntity.overview,
-            movieEntity.releaseDate,
-            movieEntity.voteAverage
+            movieEntity.page
+        )
+    }
+
+    fun toMovieDetailVO(movieDetailEntity: MovieDetailEntity): MovieDetailVO {
+        return MovieDetailVO(
+            movieDetailEntity.id,
+            movieDetailEntity.title,
+            movieDetailEntity.imageUrl,
+            movieDetailEntity.overview,
+            movieDetailEntity.releaseDate,
+            movieDetailEntity.voteAverage
         )
     }
 

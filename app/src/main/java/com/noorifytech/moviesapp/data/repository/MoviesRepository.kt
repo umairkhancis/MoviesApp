@@ -2,9 +2,10 @@ package com.noorifytech.moviesapp.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
+import com.noorifytech.moviesapp.data.repository.vo.MovieDetailVO
 import com.noorifytech.moviesapp.data.repository.vo.MovieVO
 
 interface MoviesRepository {
     fun getPopularMovies(): LiveData<PagedList<MovieVO>>
-    fun getMovieDetails(movieId: Int): LiveData<MovieVO>
+    fun getMovieDetails(movieId: Int): LiveData<MovieDetailVO>
 }

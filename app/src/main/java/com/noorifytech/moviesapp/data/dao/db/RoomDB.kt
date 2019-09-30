@@ -4,13 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.noorifytech.moviesapp.data.dao.db.entity.MovieDetailEntity
 import com.noorifytech.moviesapp.data.dao.db.entity.MovieEntity
 
 /**
  * Movies database description.
  */
 @Database(
-    entities = [MovieEntity::class],
+    entities = [MovieEntity::class, MovieDetailEntity::class],
     version = 1,
     exportSchema = false
 )

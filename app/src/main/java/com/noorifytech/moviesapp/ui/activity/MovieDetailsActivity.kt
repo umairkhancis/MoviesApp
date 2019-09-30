@@ -6,7 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.noorifytech.moviesapp.R
-import com.noorifytech.moviesapp.data.repository.vo.MovieVO
+import com.noorifytech.moviesapp.data.repository.vo.MovieDetailVO
 import com.noorifytech.moviesapp.ui.viewmodel.MovieDetailsViewModel
 import com.noorifytech.moviesapp.ui.viewmodel.factory.MovieDetailsViewModelFactory
 import kotlinx.android.synthetic.main.activity_movie_details.*
@@ -32,7 +32,7 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     private fun init() {
         viewModel.getMovieDetails(movieId)
-            .observe(this, Observer<MovieVO> {
+            .observe(this, Observer<MovieDetailVO> {
                 movieNameTV.text = it.title
                 movieOverviewTV.text = it.overview
                 movieReleaseDateTV.text = it.getReleaseDate()
