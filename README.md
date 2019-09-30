@@ -7,7 +7,7 @@ Android App to display popular movies using TMDB API in MVVM Architecture.
  - [LiveData](https://developer.android.com/topic/libraries/architecture/livedata) - For observing data changes to the UI from the data model.
  - [Room](https://developer.android.com/topic/libraries/architecture/room) - An SQL Persistence Library which acts as a cache for offline support.
  - [Retrofit](https://square.github.io/retrofit/) - A type-safe HTTP client for Android and Java.
- - [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html) - For asynchronous programming.
+ - [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html) - Concurrency design pattern.
  - [Glide](https://bumptech.github.io/glide/) - An image loading and caching library for Android focused on smooth scrolling.
  
  ### Backend Service:
